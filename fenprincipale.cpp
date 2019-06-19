@@ -156,6 +156,10 @@ void FenPrincipale::verificationBoard(){
     }
     if(test.isSolved()){
         this->Grid = test;
+        actualScore.setScore(100);
+        actualScore.calculDuration();
+        actualScore.setNbStep(10);
+        actualScore.addThisScore();
         QMessageBox::information(this, "Oh well done, the board is valid", "You're awesome !");
     }
     else{
@@ -258,6 +262,7 @@ void FenPrincipale::resolveBoard(){
     actualScore.setScore(100);
     actualScore.calculDuration();
 
+
     if (!th->isRunning()){
         th->start();
     }
@@ -320,7 +325,7 @@ void FenPrincipale::userCreation(){
             cout << player.getId() << endl;
             actualScore.setUser(player.getId());
             player.getUserScore();
-            cout << "Score du joueur : " << player.getScore()[0].getBoard() << " : " << player.getScore()[0].getScore() << endl;
+            //cout << "Score du joueur : " << player.getScore()[0].getBoard() << " : " << player.getScore()[0].getScore() << endl;
         }
     }while(name == "");
 }
