@@ -72,10 +72,10 @@ FenPrincipale::FenPrincipale()
     zoneCentrale->setLayout(allLayout);
 
     setCentralWidget(zoneCentrale);
-
 }
 
-void FenPrincipale::openBoard(){
+void FenPrincipale::openBoard()
+{
     QString file = QFileDialog::getOpenFileName(this, "open a file", QString(), "Text (*.txt)");
     char * cstr;
     string fname = file.toStdString();
@@ -93,7 +93,8 @@ void FenPrincipale::openBoard(){
         actualScore = Score();
         QString boardName = file.split(QDir::separator()).last();
         actualScore.setBoard(boardName.toStdString());
-        this->userCreation();
+        if(this->player.getName() == "")
+            this->userCreation();
         th->setBoard(this->Grid);
         for(int i(0); i<9; ++i){
             for(int j(0); j<9; ++j){
@@ -132,7 +133,8 @@ void FenPrincipale::openBoard(){
     btn_forward->setVisible(false);
 }
 
-void FenPrincipale::verificationBoard(){
+void FenPrincipale::verificationBoard()
+{
     // i can get all the value in my text field
     QString valeur;
     for(int i(0); i<(int)this->listWid.size(); ++i){
@@ -169,9 +171,10 @@ void FenPrincipale::verificationBoard(){
 
 
 /*
-    take a board in parameter and update all the lineEdit with the new values 
+    take a board in parameter and update all the lineEdit with the new values
 */
-void FenPrincipale::updateBoard(Board b){
+void FenPrincipale::updateBoard(Board b)
+{
     int v(0), count(0);
     QPalette palette;
     QPalette baseChoose;
@@ -212,7 +215,8 @@ void FenPrincipale::updateBoard(Board b){
     }
 }
 
-void FenPrincipale::screenBoard(Board &b){
+void FenPrincipale::screenBoard(Board &b)
+{
     int v(0);
     QPalette palette;
     QPalette baseChoose;
@@ -249,10 +253,11 @@ void FenPrincipale::screenBoard(Board &b){
 }
 
 /*
-    disable all the button that we can't use during the resolution 
+    disable all the buttons who can't be use during the resolution
     and launch the thread
 */
-void FenPrincipale::resolveBoard(){
+void FenPrincipale::resolveBoard()
+{
     btn_validate->setEnabled(false);
     btn_correct->setEnabled(false);
     btn_cancel->setEnabled(false);
@@ -268,7 +273,8 @@ void FenPrincipale::resolveBoard(){
     }
 }
 
-void FenPrincipale::getPreviousBoard(){
+void FenPrincipale::getPreviousBoard()
+{
     int index(0);
     for(int j(0); j<(int)this->listBoardResolve.size(); ++j){
         if(this->Grid == this->listBoardResolve[j]){
@@ -287,7 +293,8 @@ void FenPrincipale::getPreviousBoard(){
     btn_forward->setEnabled(true);
 }
 
-void FenPrincipale::getNextBoard(){
+void FenPrincipale::getNextBoard()
+{
     int index(0);
     for(int j(0); j<(int)this->listBoardResolve.size(); ++j){
         if(this->Grid == this->listBoardResolve[j]){
@@ -306,17 +313,19 @@ void FenPrincipale::getNextBoard(){
 }
 
 /*
-    reset all the textLines with the value of the original board 
+    reset all the textLines with the value of the original board
 */
-void FenPrincipale::reset(){
+void FenPrincipale::reset()
+{
     this->screenBoard(this->Grid);
 }
 
 /*
     Open a dialog who ask the name to create a user
 */
-void FenPrincipale::userCreation(){
-    QString name = ""; 
+void FenPrincipale::userCreation()
+{
+    QString name = "";
     do{
         name = QInputDialog::getText(this, "user name", "enter the user name");
         player.setName(name.toStdString());
@@ -331,21 +340,22 @@ void FenPrincipale::userCreation(){
 }
 
 /*
-    run the thread that resolve the board 
-    call the step function of board 
+    run the thread who resolve the board
+    call the step function of board
     emit two signals : updateBoard and thIsStopped
 */
-void myThread::run(){
+void myThread::run()
+{
     Board tmp;
     int step(1);
     do
     {
         step++;
         tmp = this->thBoard;
-        this->thBoard.step();   
+        this->thBoard.step();
         emit(updateBoard(this->thBoard));
         sleep(1);
-    } while (this->thBoard != tmp);
+    }while (this->thBoard != tmp);
     emit(thIsStopped());
     exec();
 }
@@ -353,7 +363,8 @@ void myThread::run(){
 /*
     at the end of the resolveBoard thread make all the button enable again
 */
-void FenPrincipale::thIsStopped(){
+void FenPrincipale::thIsStopped()
+{
     this->Grid = this->listBoardResolve[this->listBoardResolve.size() - 1];
     this->listBoardResolve.pop_back();
     cout << this->listBoardResolve.size();

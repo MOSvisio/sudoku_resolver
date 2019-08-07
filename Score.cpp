@@ -79,6 +79,6 @@ void Score::setDuration(QTime duration){
 }
 
 void Score::addThisScore(){
-    ScoreDAO bdd = ScoreDAO(QString::fromStdString("/home/lucas/Documents/Development/C++/learn/sudoku_clean_projet/table.db"));
+    ScoreDAO bdd = ScoreDAO(QString::fromStdString("table.db"));
     bdd.addScore(*this);
 }

@@ -1,6 +1,7 @@
 #include"User.h"
 #include"Userdao.h"
 #include"scoredao.h"
+
 User::User(){
     this->id = 0;
     this->setName("");
@@ -37,13 +38,13 @@ void User::addScore(Score newScore){
 
 
 void User::addThisUser(){
-    UserDAO bdd = UserDAO(QString::fromStdString("/home/lucas/Documents/Development/C++/learn/sudoku_clean_projet/table.db"));
+    UserDAO bdd = UserDAO(QString::fromStdString("table.db"));
     bdd.addUser(*this);
 }
 
 bool userExistByName(string name){
     User tmp = User(name);
-    UserDAO bdd = UserDAO(QString::fromStdString("/home/lucas/Documents/Development/C++/learn/sudoku_clean_projet/table.db"));
+    UserDAO bdd = UserDAO(QString::fromStdString("table.db"));
 
     if(bdd.existIn(tmp)){
         return true;
@@ -54,7 +55,7 @@ bool userExistByName(string name){
 }
 
 void User::getUser(){
-    UserDAO bdd = UserDAO(QString::fromStdString("/home/lucas/Documents/Development/C++/learn/sudoku_clean_projet/table.db"));
+    UserDAO bdd = UserDAO(QString::fromStdString("table.db"));
     cout << this->getName();
     string name = this->getName();
     if(bdd.existIn(*this)){
@@ -62,13 +63,13 @@ void User::getUser(){
         this->setId(tmp.getId());
     } else{
         this->addThisUser();
-        bdd = UserDAO(QString::fromStdString("/home/lucas/Documents/Development/C++/learn/sudoku_clean_projet/table.db"));
+        bdd = UserDAO(QString::fromStdString("table.db"));
         User tmp = bdd.getByName(name);
         this->setId(tmp.getId());
     }
 }
 
 void User::getUserScore(){
-    ScoreDAO bdd = ScoreDAO(QString::fromStdString("/home/lucas/Documents/Development/C++/learn/sudoku_clean_projet/table.db"));
+    ScoreDAO bdd = ScoreDAO(QString::fromStdString("table.db"));
     this->userScore = bdd.getAllById(this->getId());
 }
